@@ -1,7 +1,5 @@
 name: Footnotes
 description: 'Add automatically numbered footnotes to your posts.'
 core: 8.x
-version: 7.x-2.5+7-dev
 project: footnotes
-datestamp: '1380579910'
 type: module
