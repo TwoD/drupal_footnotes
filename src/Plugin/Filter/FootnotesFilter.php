@@ -134,6 +134,11 @@ class FootnotesFilter extends FilterBase {
       $text .= "\n\n" . $footer;
     }
     $result = new FilterProcessResult($text);
+    $result->setAttachments(array(
+      'library' => array(
+        'footnotes/footnotes',
+      ),
+    ));
     return $result;
   }
 
@@ -184,7 +189,7 @@ class FootnotesFilter extends FilterBase {
           '#theme' => 'footnote_list',
           '#footnotes' => $store_matches,
         );
-        $str =  \Drupal::service('renderer')->render($store_matches, FALSE);
+        $str =  \Drupal::service('renderer')->render($markup, FALSE);
       }
       // Reset the static variables so they can be used again next time.
       $n = 0;
