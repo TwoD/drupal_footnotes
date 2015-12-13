@@ -17,37 +17,11 @@ function footnotes_help($route_name, RouteMatchInterface $route_match) {
     case 'help.page.footnotes':
       return
         t('Insert automatically numbered footnotes using &lt;fn&gt; or [fn] tags. Enable the footnotes text filter @here',
-          array('@here' => Drupal::l(t('here'), \Drupal\Core\Url::fromRoute('filter.admin_overview')))
+          array('@here' => Drupal::l(t('here'), Url::fromRoute('filter.admin_overview')))
         );
   }
 }
 
-/**
- * Search the $store_matches array for footnote text that matches and return the value.
- *
- * Note: This does a linear search on the $store_matches array. For a large list of 
- * footnotes it would be more efficient to maintain a separate array with the footnote
- * content as key, in order to do a hash lookup at this stage. Since you typically
- * only have a handful of footnotes, this simple search is assumed to be more efficient.
- * (but was not tested).
- *
- * @author djdevin (see http://drupal.org/node/808214)
- * 
- * @param string The footnote text
- * @param array The matches array
- *
- * @return mixed The value of the existing footnote, FALSE otherwise
- */
-function _footnotes_helper_find_footnote($text, &$store_matches) {
-  if (!empty($store_matches)) {
-    foreach ($store_matches as &$fn) {
-      if ($fn['text'] == $text) {
-        return $fn['value'];
-      }
-    }
-  }  
-  return FALSE;
-}
  
 /**
  * Implementation of hook_theme()

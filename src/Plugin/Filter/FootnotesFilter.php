@@ -189,7 +189,7 @@ class FootnotesFilter extends FilterBase {
           '#theme' => 'footnote_list',
           '#footnotes' => $store_matches,
         );
-        $str =  \Drupal::service('renderer')->render($markup, FALSE);
+        $str = \Drupal::service('renderer')->render($markup, FALSE);
       }
       // Reset the static variables so they can be used again next time.
       $n = 0;
@@ -229,7 +229,7 @@ class FootnotesFilter extends FilterBase {
         $n = $value;
       }
     }
-    elseif ($opt_collapse and $value_existing = _footnotes_helper_find_footnote($matches[2], $store_matches)) {
+    elseif ($opt_collapse and $value_existing = $this->findFootnote($matches[2], $store_matches)) {
       // An identical footnote already exists. Set value to the previously
       // existing value.
       $value = $value_existing;
@@ -298,7 +298,7 @@ class FootnotesFilter extends FilterBase {
       '#theme' => 'footnote_link',
       'fn' => $fn,
     );
-    $result =  \Drupal::service('renderer')->render($fn, FALSE);
+    $result = \Drupal::service('renderer')->render($fn, FALSE);
 
     return $result;
   }
@@ -346,4 +346,34 @@ class FootnotesFilter extends FilterBase {
     return $settings;
   }
 
+
+  /**
+   * Search the $store_matches array for footnote text that matches.
+   *
+   * Note: This does a linear search on the $store_matches array. For a large
+   * list of footnotes it would be more efficient to maintain a separate array
+   * with the footnote content as key, in order to do a hash lookup at this
+   * stage. Since you typically only have a handful of footnotes, this simple
+   * search is assumed to be more efficient, but was not tested.
+   *
+   * @author djdevin (see http://drupal.org/node/808214)
+   *
+   * @param string
+   *   The footnote text.
+   * @param array
+   *   The matches array.
+   *
+   * @return string|false
+   *   The value of the existing footnote, FALSE otherwise.
+   */
+  function findFootnote($text, &$store_matches) {
+    if (!empty($store_matches)) {
+      foreach ($store_matches as &$fn) {
+        if ($fn['text'] == $text) {
+          return $fn['value'];
+        }
+      }
+    }
+    return FALSE;
+  }
 }
