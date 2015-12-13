@@ -16,17 +16,17 @@ use Drupal\editor\Entity\Editor;
  * Defines the "CodeButton" plugin.
  *
  * @CKEditorPlugin(
- *   id = "footnotesbutton",
+ *   id = "footnotes",
  *   label = @Translation("FootnotesButton")
  * )
  */
-class FootnotesButton extends PluginBase implements CKEditorPluginInterface, CKEditorPluginButtonsInterface {
+class Footnotes extends PluginBase implements CKEditorPluginInterface, CKEditorPluginButtonsInterface {
 
   /**
    * Implements \Drupal\ckeditor\Plugin\CKEditorPluginInterface::getDependencies().
    */
   function getDependencies(Editor $editor) {
-    return array();
+    return array('fakeobjects');
   }
 
   /**
@@ -57,7 +57,7 @@ class FootnotesButton extends PluginBase implements CKEditorPluginInterface, CKE
     return array(
       'footnotes' => array(
         'label' => t('Footnotes'),
-        'image' => drupal_get_path('module', 'footnotes') . '/assets/js/ckeditor/images/footnotes.png'
+        'image' => drupal_get_path('module', 'footnotes') . '/assets/js/ckeditor/icons/footnotes.png'
       )
     );
   }

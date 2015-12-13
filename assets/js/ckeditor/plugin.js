@@ -22,7 +22,7 @@
     CKEDITOR.plugins.add( 'footnotes',
         {
             requires : [ 'fakeobjects','dialog' ],
-            icons: 'footnotes', // %REMOVE_LINE_CORE%
+            icons: 'footnotes',
             onLoad: function() {
                 CKEDITOR.addCss(
                     '.cke_footnote' +
