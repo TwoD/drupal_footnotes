@@ -341,7 +341,7 @@ class FootnotesFilter extends FilterBase {
       '#type' => 'checkbox',
       '#title' => t('Collapse footnotes with identical content'),
       '#default_value' => $this->settings['footnotes_collapse'],
-      '#description' => t('If two footnotes have the exact same content, they will be collapsed into one as if using the same value="" attribute.')
+      '#description' => t('If two footnotes have the exact same content, they will be collapsed into one as if using the same value="" attribute.'),
     );
     return $settings;
   }
@@ -356,17 +356,15 @@ class FootnotesFilter extends FilterBase {
    * stage. Since you typically only have a handful of footnotes, this simple
    * search is assumed to be more efficient, but was not tested.
    *
-   * @author djdevin (see http://drupal.org/node/808214)
-   *
-   * @param string
+   * @param string $text
    *   The footnote text.
-   * @param array
+   * @param array $store_matches
    *   The matches array.
    *
    * @return string|false
    *   The value of the existing footnote, FALSE otherwise.
    */
-  function findFootnote($text, &$store_matches) {
+  private function findFootnote($text, &$store_matches) {
     if (!empty($store_matches)) {
       foreach ($store_matches as &$fn) {
         if ($fn['text'] == $text) {
@@ -376,4 +374,5 @@ class FootnotesFilter extends FilterBase {
     }
     return FALSE;
   }
+
 }

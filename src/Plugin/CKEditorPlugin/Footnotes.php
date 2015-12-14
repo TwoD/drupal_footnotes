@@ -23,49 +23,50 @@ use Drupal\editor\Entity\Editor;
 class Footnotes extends PluginBase implements CKEditorPluginInterface, CKEditorPluginButtonsInterface {
 
   /**
-   * Implements \Drupal\ckeditor\Plugin\CKEditorPluginInterface::getDependencies().
+   * Implements CKEditorPluginInterface::getDependencies().
    */
-  function getDependencies(Editor $editor) {
+  public function getDependencies(Editor $editor) {
     return array('fakeobjects');
   }
 
   /**
-   * Implements \Drupal\ckeditor\Plugin\CKEditorPluginInterface::getLibraries().
+   * Implements CKEditorPluginInterface::getLibraries().
    */
-  function getLibraries(Editor $editor) {
+  public function getLibraries(Editor $editor) {
     return array();
   }
 
   /**
-   * Implements \Drupal\ckeditor\Plugin\CKEditorPluginInterface::isInternal().
+   * Implements CKEditorPluginInterface::isInternal().
    */
-  function isInternal() {
+  public function isInternal() {
     return FALSE;
   }
 
   /**
-   * Implements \Drupal\ckeditor\Plugin\CKEditorPluginInterface::getFile().
+   * Implements CKEditorPluginInterface::getFile().
    */
-  function getFile() {
+  public function getFile() {
     return drupal_get_path('module', 'footnotes') . '/assets/js/ckeditor/plugin.js';
   }
 
   /**
-   * Implements \Drupal\ckeditor\Plugin\CKEditorPluginButtonsInterface::getButtons().
+   * Implements CKEditorPluginButtonsInterface::getButtons().
    */
-  function getButtons() {
+  public function getButtons() {
     return array(
       'footnotes' => array(
         'label' => t('Footnotes'),
-        'image' => drupal_get_path('module', 'footnotes') . '/assets/js/ckeditor/icons/footnotes.png'
-      )
+        'image' => drupal_get_path('module', 'footnotes') . '/assets/js/ckeditor/icons/footnotes.png',
+      ),
     );
   }
 
   /**
-   * Implements \Drupal\ckeditor\Plugin\CKEditorPluginInterface::getConfig().
+   * Implements CKEditorPluginInterface::getConfig().
    */
   public function getConfig(Editor $editor) {
     return array();
   }
+
 }
