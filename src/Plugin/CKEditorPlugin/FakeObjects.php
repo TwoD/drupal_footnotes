@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\footnotes\Plugin\CKEditorPlugin\FakeObjects.
- */
-
 namespace Drupal\footnotes\Plugin\CKEditorPlugin;
 
 use Drupal\ckeditor\CKEditorPluginInterface;

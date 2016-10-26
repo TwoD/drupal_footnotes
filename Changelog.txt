@@ -10,9 +10,12 @@ Major features
 
 Smaller fixes
 
- - Remove "DEPRECATED" text from Better URL filter and instead have a small "Note" about it not being available in Footnotes 7.x-x.x. [#1002436]
- - Correctly ignore also a tag containing linebreak between the &gt; and &lt;. Fixes bug [#1002434]
- - Add textarea to ignored tags. Anything inside a textarea will be ignored. Bug [#974760]
+ - Remove "DEPRECATED" text from Better URL filter and instead have a small 
+   "Note" about it not being available in Footnotes 7.x-x.x. [#1002436]
+ - Correctly ignore also a tag containing linebreak between the &gt; and &lt;. 
+   Fixes bug [#1002434]
+ - Add textarea to ignored tags. Anything inside a textarea will be ignored.
+   Bug [#974760]
 
 The intention is to branch a Drupal 7 version out of this release.
 
@@ -21,7 +24,8 @@ The intention is to branch a Drupal 7 version out of this release.
 Major features
 
  - Add Footnotes Wysiwyg module with TinyMCE AND CKEditor support.
-   This deprecates Footnotes TinyMCE module, which is kept around for backward compatibility.
+   This deprecates Footnotes TinyMCE module, which is kept around for backward
+   compatibility.
    [#728642]
  - Add i18n support via Drupal.t() also to TinyMCE module. [#672034]
  - New feature (option): Collapse identical footnotes into one, as if using same 
@@ -50,8 +54,10 @@ Smaller fixes
 
 2010-01-17 Footnotes 2.2
 
- - Add TinyMCE support as a separate plugin tinymce_footnotes (thanks elgreg #464066)
- - Can have multiple references to same footnote in body by repeating value="" (#636808)
+ - Add TinyMCE support as a separate plugin tinymce_footnotes 
+   (thanks elgreg #464066)
+ - Can have multiple references to same footnote in body by repeating value=""
+   (#636808)
 Small fixes
  - Move translations from "po" to "translations" subdirectory. #430656
  - Rename footnotes-alternative_layout.css due to typo in filename.
@@ -66,10 +72,14 @@ Small fixes
 2008-07-30 Footnotes 2.0
 
  - Add support for using [fn]square brackets[/fn] (268026)
- - Change documentation to talk about [fn] by default, but <fn> is still supported
+ - Change documentation to talk about [fn] by default, but <fn> is still
+   supported
  - Add support for specifying "value" attribute. (emfabric 282104)
  - Mention http://drupal.org/node/279420 in known issues
  - Adding Better URL filter (fork from core). http://drupal.org/node/161217
- - There appears to also be a French translation now. Thanks Beginner! (Japanese already done earlier.)
- - Fix bug where teaser might cut into the middle of a footnote: http://drupal.org/node/253326
- - Start using the Drupal theme system, footnotes can now be themed by site admins (emfabric 221156)
+ - There appears to also be a French translation now. Thanks Beginner! 
+   (Japanese already done earlier.)
+ - Fix bug where teaser might cut into the middle of a footnote:
+   http://drupal.org/node/253326
+ - Start using the Drupal theme system, footnotes can now be themed by site
+   admins (emfabric 221156)

@@ -1,12 +1,10 @@
 /*
  * CSS specific to Footnotes module.
- *                                                                             
- * This is an alternative layout, it is not so nice but overcomes              
- * the layout bugs on IE. http://drupal.org/node/166628                        
- * To use this layout, just rename this file to footnotes.css.                 
- */                                                                            
-
-
+ *
+ * This is an alternative layout, it is not so nice but overcomes
+ * the layout bugs on IE. http://drupal.org/node/166628
+ * To use this layout, just rename this file to footnotes.css.
+ */
 
 /* Add empty space before footnotes and a black line on top. */
 .footnotes {
@@ -21,7 +19,7 @@
   font-size: 0.9em;
 }
 
-/* 
+/*
   Make the footnote a supertext^1
 */
 .see-footnote {
@@ -63,7 +61,7 @@ ul.footnotes li {
 }
 
 
-/* 
+/*
   Make the multiple backlinks a supertext^1
 */
 .footnotes .footnote-multi {
@@ -75,14 +73,13 @@ ul.footnotes li {
 
 
 /*
- * Textile Footnotes 
+ * Textile Footnotes
  */
- /* First footnote */
- #fn1 {
-   border-top: 1px solid #000000;
-   margin-top: 3em;
- }
- .footnote {
-   font-size: 0.9em;
- }
- 
+/* First footnote */
+#fn1 {
+  border-top: 1px solid #000000;
+  margin-top: 3em;
+}
+.footnote {
+  font-size: 0.9em;
+}

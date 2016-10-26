@@ -27,9 +27,9 @@ body.
  [fn value="5"]This is a reference to the same footnote #5, this text itself is
 discarded.[/fn]</code>
 
-Since 2.4 Footnotes supports both TinyMCE and CKEditor via plugins to the WYSIWYG
-module. They each work slightly differently, please see the README for those
-plugins to learn more.
+Since 2.4 Footnotes supports both TinyMCE and CKEditor via plugins to the
+WYSIWYG module. They each work slightly differently, please see the README for
+those plugins to learn more.
 
 Version 2.4 introduces an optional feature that identical footnotes are
 collapsed into one, as if they had the same value="" attribute. This must be

@@ -18,7 +18,7 @@
   font-size: 0.9em;
 }
 
-/* 
+/*
   Make the footnote a supertext^1
 */
 .see-footnote {
@@ -45,7 +45,7 @@ ul.footnotes li {
 /* Move the footnote number outside of the margin for footnote text (hanging indent) */
 ul.footnotes {
   /* This is apparently very needed for the "position: absolute;" below to work correctly*/
-  position: relative; 
+  position: relative;
 }
 .footnotes .footnote-label {
   position: absolute;
@@ -63,12 +63,12 @@ ul.footnotes {
 }
 
 
-/* Note: This CSS has a minor bug on all versions of IE in that the footnote numbers 
-are aligned with the absolute bottom of their space, thus being a couple of pixels 
-lower than their corresponding line of text. IE5.5 has a serious bug in that the numbers 
+/* Note: This CSS has a minor bug on all versions of IE in that the footnote numbers
+are aligned with the absolute bottom of their space, thus being a couple of pixels
+lower than their corresponding line of text. IE5.5 has a serious bug in that the numbers
 are not shifted left at all, thus being garbled together with the start of their text. */
 
-/* 
+/*
   Make the multiple backlinks a supertext^1
 */
 .footnotes .footnote-multi {
@@ -80,14 +80,13 @@ are not shifted left at all, thus being garbled together with the start of their
 
 
 /*
- * Textile Footnotes 
+ * Textile Footnotes
  */
- /* First footnote */
- #fn1 {
-   border-top: 1px solid #000000;
-   margin-top: 3em;
- }
- .footnote {
-   font-size: 0.9em;
- }
- 
+/* First footnote */
+#fn1 {
+  border-top: 1px solid #000000;
+  margin-top: 3em;
+}
+.footnote {
+  font-size: 0.9em;
+}

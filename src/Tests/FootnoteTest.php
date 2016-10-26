@@ -1,10 +1,5 @@
 <?php
-/**
- * @file
- * Contains Drupal\footnotes\Tests\FootnotesTest.
- */
 
-// Namespace of tests.
 namespace Drupal\footnotes\Tests;
 
 // Use of base class for the tests.
@@ -25,6 +20,8 @@ class FootnoteTest extends WebTestBase {
 
   /**
    * A global filter administrator.
+   *
+   * @var object
    */
   protected $filterAdminUser;
 

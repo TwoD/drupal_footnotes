@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\footnotes\Plugin\Filter\FootnotesFilter.
- */
-
 namespace Drupal\footnotes\Plugin\Filter;
 
 // Base class for the filter.
@@ -345,7 +340,6 @@ class FootnotesFilter extends FilterBase {
     );
     return $settings;
   }
-
 
   /**
    * Search the $store_matches array for footnote text that matches.
