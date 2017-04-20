@@ -21,14 +21,14 @@ class Footnotes extends PluginBase implements CKEditorPluginInterface, CKEditorP
    * Implements CKEditorPluginInterface::getDependencies().
    */
   public function getDependencies(Editor $editor) {
-    return array('fakeobjects');
+    return ['fakeobjects'];
   }
 
   /**
    * Implements CKEditorPluginInterface::getLibraries().
    */
   public function getLibraries(Editor $editor) {
-    return array();
+    return [];
   }
 
   /**
@@ -49,19 +49,19 @@ class Footnotes extends PluginBase implements CKEditorPluginInterface, CKEditorP
    * Implements CKEditorPluginButtonsInterface::getButtons().
    */
   public function getButtons() {
-    return array(
-      'footnotes' => array(
+    return [
+      'footnotes' => [
         'label' => t('Footnotes'),
         'image' => drupal_get_path('module', 'footnotes') . '/assets/js/ckeditor/icons/footnotes.png',
-      ),
-    );
+      ],
+    ];
   }
 
   /**
    * Implements CKEditorPluginInterface::getConfig().
    */
   public function getConfig(Editor $editor) {
-    return array();
+    return [];
   }
 
 }

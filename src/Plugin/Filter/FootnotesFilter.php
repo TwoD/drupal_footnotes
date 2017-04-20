@@ -67,7 +67,7 @@ class FootnotesFilter extends FilterBase {
    */
   public function tips($long = FALSE) {
     if ($long) {
-      return t('You can insert footnotes directly into texts with <code>[fn]This text becomes a footnote.[/fn]</code>. This will be replaced with a running number (the footnote reference) and the text within the [fn] tags will be moved to the bottom of the page (the footnote). See %link for additional usage options.', array('%link' => '<a href="http://drupal.org/project/footnotes">' . t('Footnotes Readme page') . '</a>'));
+      return t('You can insert footnotes directly into texts with <code>[fn]This text becomes a footnote.[/fn]</code>. This will be replaced with a running number (the footnote reference) and the text within the [fn] tags will be moved to the bottom of the page (the footnote). See %link for additional usage options.', ['%link' => '<a href="http://drupal.org/project/footnotes">' . t('Footnotes Readme page') . '</a>']);
     }
     else {
       return t('Use [fn]...[/fn] (or &lt;fn&gt;...&lt;/fn&gt;) to insert automatically numbered footnotes.');
@@ -94,7 +94,7 @@ class FootnotesFilter extends FilterBase {
     // A closing tag may sometimes be missing when we are processing a teaser
     // and it has been cut in the middle of the footnote.
     // See http://drupal.org/node/253326
-    $foo = array();
+    $foo = [];
     $open_tags = preg_match_all("|<fn([^>]*)>|", $text, $foo);
     $close_tags = preg_match_all("|</fn>|", $text, $foo);
 
@@ -111,10 +111,10 @@ class FootnotesFilter extends FilterBase {
     $this->replaceCallback($this->settings['footnotes_collapse'], 'prepare');
 
     $pattern = '|<fn([^>]*)>(.*?)</fn>|s';
-    $text = preg_replace_callback($pattern, array(
+    $text = preg_replace_callback($pattern, [
       $this,
       'replaceCallback',
-    ), $text);
+    ], $text);
 
     // Replace tag <footnotes> with the list of footnotes.
     // If tag is not present, by default add the footnotes at the end.
@@ -129,11 +129,11 @@ class FootnotesFilter extends FilterBase {
       $text .= "\n\n" . $footer;
     }
     $result = new FilterProcessResult($text);
-    $result->setAttachments(array(
-      'library' => array(
+    $result->setAttachments([
+      'library' => [
         'footnotes/footnotes',
-      ),
-    ));
+      ],
+    ]);
     return $result;
   }
 
@@ -158,8 +158,8 @@ class FootnotesFilter extends FilterBase {
   protected function replaceCallback($matches, $op = '') {
     static $opt_collapse = 0;
     static $n = 0;
-    static $store_matches = array();
-    static $used_values = array();
+    static $store_matches = [];
+    static $used_values = [];
     $str = '';
 
     if ($op == 'prepare') {
@@ -180,16 +180,16 @@ class FootnotesFilter extends FilterBase {
         // potentially introduce  security issues
         // (see https://www.drupal.org/node/2195739). You should use renderable
         // arrays instead. @see https://www.drupal.org/node/2195739
-        $markup = array(
+        $markup = [
           '#theme' => 'footnote_list',
           '#footnotes' => $store_matches,
-        );
+        ];
         $str = \Drupal::service('renderer')->render($markup, FALSE);
       }
       // Reset the static variables so they can be used again next time.
       $n = 0;
-      $store_matches = array();
-      $used_values = array();
+      $store_matches = [];
+      $used_values = [];
 
       return $str;
     }
@@ -243,7 +243,7 @@ class FootnotesFilter extends FilterBase {
     // Create a sanitized version of $text that is suitable for using as HTML
     // attribute value. (In particular, as the title attribute to the footnote
     // link).
-    $allowed_tags = array();
+    $allowed_tags = [];
     $text_clean = Xss::filter($matches['2'], $allowed_tags);
     // HTML attribute cannot contain quotes.
     $text_clean = str_replace('"', "&quot;", $text_clean);
@@ -253,13 +253,13 @@ class FootnotesFilter extends FilterBase {
     $text_clean = str_replace("\r", "", $text_clean);
 
     // Create a footnote item as an array.
-    $fn = array(
+    $fn = [
       'value' => $value,
       'text' => $matches[2],
       'text_clean' => $text_clean,
       'fn_id' => 'footnote' . $value_id . '_' . $randstr,
       'ref_id' => 'footnoteref' . $value_id . '_' . $randstr,
-    );
+    ];
 
     // We now allow to repeat the footnote value label, in which case the link
     // to the previously existing footnote is returned. Content of the current
@@ -281,7 +281,7 @@ class FootnotesFilter extends FilterBase {
       // Push the new ref_id into the first occurence of this footnote label
       // The stored footnote thus holds a list of ref_id's rather than just one
       // id.
-      $ref_array = is_array($store_matches[$i]['ref_id']) ? $store_matches[$i]['ref_id'] : array($store_matches[$i]['ref_id']);
+      $ref_array = is_array($store_matches[$i]['ref_id']) ? $store_matches[$i]['ref_id'] : [$store_matches[$i]['ref_id']];
       array_push($ref_array, $fn['ref_id']);
       $store_matches[$i]['ref_id'] = $ref_array;
     }
@@ -289,10 +289,10 @@ class FootnotesFilter extends FilterBase {
     // Return the item themed into a footnote link.
     // Drupal 7 requires we use "render element" which just introduces a wrapper
     // around the old array.
-    $fn = array(
+    $fn = [
       '#theme' => 'footnote_link',
       'fn' => $fn,
-    );
+    ];
     $result = \Drupal::service('renderer')->render($fn, FALSE);
 
     return $result;
@@ -332,12 +332,12 @@ class FootnotesFilter extends FilterBase {
    *       drupal 7, must update it only.
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
-    $settings['footnotes_collapse'] = array(
+    $settings['footnotes_collapse'] = [
       '#type' => 'checkbox',
       '#title' => t('Collapse footnotes with identical content'),
       '#default_value' => $this->settings['footnotes_collapse'],
       '#description' => t('If two footnotes have the exact same content, they will be collapsed into one as if using the same value="" attribute.'),
-    );
+    ];
     return $settings;
   }
 

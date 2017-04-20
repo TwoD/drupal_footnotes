@@ -24,14 +24,14 @@ class FakeObjects extends PluginBase implements CKEditorPluginInterface, CKEdito
    * Implements CKEditorPluginInterface::getDependencies().
    */
   public function getDependencies(Editor $editor) {
-    return array();
+    return [];
   }
 
   /**
    * Implements CKEditorPluginInterface::getLibraries().
    */
   public function getLibraries(Editor $editor) {
-    return array();
+    return [];
   }
 
   /**
@@ -52,14 +52,14 @@ class FakeObjects extends PluginBase implements CKEditorPluginInterface, CKEdito
    * Implements CKEditorPluginButtonsInterface::getButtons().
    */
   public function getButtons() {
-    return array();
+    return [];
   }
 
   /**
    * Implements \CKEditorPluginInterface::getConfig().
    */
   public function getConfig(Editor $editor) {
-    return array();
+    return [];
   }
 
 }

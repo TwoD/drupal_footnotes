@@ -30,7 +30,7 @@ class FootnoteTest extends WebTestBase {
    *
    * @var array
    */
-  public static $modules = array('node', 'footnotes', 'filter');
+  public static $modules = ['node', 'footnotes', 'filter'];
 
   /**
    * The number of current node.
@@ -49,29 +49,29 @@ class FootnoteTest extends WebTestBase {
     $this->node = 1;
 
     // Create a content type, as we will create nodes on test.
-    $settings = array(
+    $settings = [
       // Override default type (a random name).
       'type' => 'footnotes_content_type',
       'name' => 'Footnotes Content',
-    );
+    ];
     $this->drupalCreateContentType($settings);
 
     // Create a filter admin user.
-    $permissions = array(
+    $permissions = [
       'administer filters',
       'administer nodes',
       'access administration pages',
       'create footnotes_content_type content',
       'edit any footnotes_content_type content',
       'administer site configuration',
-    );
+    ];
     $this->filterAdminUser = $this->drupalCreateUser($permissions);
 
     // Log in with filter admin user.
     $this->drupalLogin($this->filterAdminUser);
 
     // Add an text format with only geshi filter.
-    $this->createTextFormat('footnotes_text_format', array('filter_footnotes'));
+    $this->createTextFormat('footnotes_text_format', ['filter_footnotes']);
   }
 
   /**
@@ -83,7 +83,7 @@ class FootnoteTest extends WebTestBase {
    *   Array with the machine names of filters to enable.
    */
   protected function createTextFormat($format_name, array $filters) {
-    $edit = array();
+    $edit = [];
     $edit['format'] = $format_name;
     $edit['name'] = $this->randomMachineName();
     $edit['roles[' . AccountInterface::AUTHENTICATED_ROLE . ']'] = 1;
@@ -91,7 +91,7 @@ class FootnoteTest extends WebTestBase {
       $edit['filters[' . $filter . '][status]'] = TRUE;
     }
     $this->drupalPostForm('admin/config/content/formats/add', $edit, t('Save configuration'));
-    $this->assertRaw(t('Added text format %format.', array('%format' => $edit['name'])), 'New filter created.');
+    $this->assertRaw(t('Added text format %format.', ['%format' => $edit['name']]), 'New filter created.');
     $this->drupalGet('admin/config/content/formats');
   }
 
@@ -111,16 +111,16 @@ class FootnoteTest extends WebTestBase {
     $body = '<p>' . $this->randomMachineName(100) . $note1 . '</p><p>' .
       $this->randomMachineName(100) . $note2 . '</p>';
     // Create a node.
-    $node = array(
+    $node = [
       'title' => 'Test for Footnotes',
-      'body' => array(
-        array(
+      'body' => [
+        [
           'value' => $body,
           'format' => 'footnotes_text_format',
-        ),
-      ),
+        ],
+      ],
       'type' => 'footnotes_content_type',
-    );
+    ];
     $this->drupalCreateNode($node);
 
     $this->drupalGet('node/' . $this->node);
