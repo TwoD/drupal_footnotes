@@ -19,110 +19,111 @@
  * must be equal to the key used in $plugins[] in hook_wysiwyg_plugin().
  */
 (function() {
-    CKEDITOR.plugins.add( 'footnotes',
-        {
-            requires : [ 'fakeobjects','dialog' ],
-            icons: 'footnotes',
-            onLoad: function() {
-                CKEDITOR.addCss(
-                    '.cke_footnote' +
-                    '{' +
-                    'background-image: url(' + CKEDITOR.getUrl( this.path + 'images/fn_icon2.png' ) + ');' +
-                    'background-position: center center;' +
-                    'background-repeat: no-repeat;' +
-                    'width: 16px;' +
-                    'height: 16px;' +
-                    '}'
-                );
-            },
-            init: function( editor )
-            {
-                editor.addCommand('createfootnotes', new CKEDITOR.dialogCommand('createfootnotes', {
-                    allowedContent: 'fn[value]'
-                }));
-                editor.addCommand('editfootnotes', new CKEDITOR.dialogCommand('editfootnotes', {
-                    allowedContent: 'fn[value]'
-                }));
+  CKEDITOR.plugins.add( 'footnotes',
+    {
+      requires : [ 'fakeobjects','dialog' ],
+      icons: 'footnotes',
+      onLoad: function() {
+        var icon_path = window.location.origin + this.path + 'images/fn_icon2.png';
+        CKEDITOR.addCss(
+          '.cke_footnote' +
+          '{' +
+          'background-image: url(' + CKEDITOR.getUrl( icon_path ) + ');' +
+          'background-position: center center;' +
+          'background-repeat: no-repeat;' +
+          'width: 16px;' +
+          'height: 16px;' +
+          '}'
+        );
+      },
+      init: function( editor )
+      {
+        editor.addCommand('createfootnotes', new CKEDITOR.dialogCommand('createfootnotes', {
+          allowedContent: 'fn[value]'
+        }));
+        editor.addCommand('editfootnotes', new CKEDITOR.dialogCommand('editfootnotes', {
+          allowedContent: 'fn[value]'
+        }));
 
-                // Drupal Wysiwyg requirement: The first argument to editor.ui.addButton()
-                // must be equal to the key used in $plugins[<pluginName>]['buttons'][<key>]
-                // in hook_wysiwyg_plugin().
-                editor.ui.addButton && editor.ui.addButton( 'footnotes', {
-                    label: Drupal.t('Add a footnote'),
-                    command: 'createfootnotes',
-                    icon: 'footnotes'
-                });
-
-                if (editor.addMenuItems) {
-                    editor.addMenuGroup('footnotes', 100);
-                    editor.addMenuItems({
-                        footnotes: {
-                            label: Drupal.t('Edit footnote'),
-                            command: 'editfootnotes',
-                            icon: 'footnotes',
-                            group: 'footnotes'
-                        }
-                    });
-                }
-                if (editor.contextMenu) {
-                    editor.contextMenu.addListener( function( element, selection ) {
-                        if ( !element || element.data('cke-real-element-type') != 'fn' )
-                            return null;
-
-                        return { footnotes: CKEDITOR.TRISTATE_ON };
-                    });
-                }
-
-                editor.on( 'doubleclick', function( evt ) {
-                    if ( CKEDITOR.plugins.footnotes.getSelectedFootnote( editor ) )
-                        evt.data.dialog = 'editfootnotes';
-                });
-
-                CKEDITOR.dialog.add( 'createfootnotes', this.path + 'dialogs/footnotes.js' );
-                CKEDITOR.dialog.add( 'editfootnotes', this.path + 'dialogs/footnotes.js' );
-            },
-            afterInit : function( editor ) {
-                var dataProcessor = editor.dataProcessor,
-                    dataFilter = dataProcessor && dataProcessor.dataFilter;
-
-                if (dataFilter) {
-                    dataFilter.addRules({
-                        elements: {
-                            fn: function(element ) {
-                                return editor.createFakeParserElement( element, 'cke_footnote', 'fn', false );
-                            }
-                        }
-                    });
-                }
-            }
+        // Drupal Wysiwyg requirement: The first argument to editor.ui.addButton()
+        // must be equal to the key used in $plugins[<pluginName>]['buttons'][<key>]
+        // in hook_wysiwyg_plugin().
+        editor.ui.addButton && editor.ui.addButton( 'footnotes', {
+          label: Drupal.t('Add a footnote'),
+          command: 'createfootnotes',
+          icon: 'footnotes'
         });
+
+        if (editor.addMenuItems) {
+          editor.addMenuGroup('footnotes', 100);
+          editor.addMenuItems({
+            footnotes: {
+              label: Drupal.t('Edit footnote'),
+              command: 'editfootnotes',
+              icon: 'footnotes',
+              group: 'footnotes'
+            }
+          });
+        }
+        if (editor.contextMenu) {
+          editor.contextMenu.addListener( function( element, selection ) {
+            if ( !element || element.data('cke-real-element-type') != 'fn' )
+              return null;
+
+            return { footnotes: CKEDITOR.TRISTATE_ON };
+          });
+        }
+
+        editor.on( 'doubleclick', function( evt ) {
+          if ( CKEDITOR.plugins.footnotes.getSelectedFootnote( editor ) )
+            evt.data.dialog = 'editfootnotes';
+        });
+
+        CKEDITOR.dialog.add( 'createfootnotes', this.path + 'dialogs/footnotes.js' );
+        CKEDITOR.dialog.add( 'editfootnotes', this.path + 'dialogs/footnotes.js' );
+      },
+      afterInit : function( editor ) {
+        var dataProcessor = editor.dataProcessor,
+          dataFilter = dataProcessor && dataProcessor.dataFilter;
+
+        if (dataFilter) {
+          dataFilter.addRules({
+            elements: {
+              fn: function(element ) {
+                return editor.createFakeParserElement( element, 'cke_footnote', 'hiddenfield', false );
+              }
+            }
+          });
+        }
+      }
+    });
 })();
 
 CKEDITOR.plugins.footnotes = {
-    createFootnote: function( editor, origElement, text, value) {
-        if (!origElement) {
-            var realElement = CKEDITOR.dom.element.createFromHtml('<fn></fn>');
-        }
-        else {
-            realElement = origElement;
-        }
-
-        if (text && text.length > 0 )
-            realElement.setText(text);
-        if (value && value.length > 0 )
-            realElement.setAttribute('value',value);
-
-        var fakeElement = editor.createFakeElement( realElement , 'cke_footnote', 'fn', false );
-        editor.insertElement(fakeElement);
-    },
-
-    getSelectedFootnote: function( editor ) {
-        var selection = editor.getSelection();
-        var element = selection.getSelectedElement();
-        var seltype = selection.getType();
-
-        if ( seltype == CKEDITOR.SELECTION_ELEMENT && element.data('cke-real-element-type') == 'fn') {
-            return element;
-        }
+  createFootnote: function( editor, origElement, text, value) {
+    if (!origElement) {
+      var realElement = CKEDITOR.dom.element.createFromHtml('<fn></fn>');
     }
+    else {
+      realElement = origElement;
+    }
+
+    if (text && text.length > 0 )
+      realElement.setText(text);
+    if (value && value.length > 0 )
+      realElement.setAttribute('value',value);
+
+    var fakeElement = editor.createFakeElement( realElement , 'cke_footnote', 'hiddenfield', false );
+    editor.insertElement(fakeElement);
+  },
+
+  getSelectedFootnote: function( editor ) {
+    var selection = editor.getSelection();
+    var element = selection.getSelectedElement();
+    var seltype = selection.getType();
+
+    if ( seltype == CKEDITOR.SELECTION_ELEMENT && element.data('cke-real-element-type') == 'hiddenfield') {
+      return element;
+    }
+  }
 };
