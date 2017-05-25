@@ -278,7 +278,7 @@ class FootnotesFilter extends FilterBase {
       $fn['text'] = $store_matches[$i]['text'];
       $fn['text_clean'] = $store_matches[$i]['text_clean'];
       $fn['fn_id'] = $store_matches[$i]['fn_id'];
-      // Push the new ref_id into the first occurence of this footnote label
+      // Push the new ref_id into the first occurrence of this footnote label
       // The stored footnote thus holds a list of ref_id's rather than just one
       // id.
       $ref_array = is_array($store_matches[$i]['ref_id']) ? $store_matches[$i]['ref_id'] : [$store_matches[$i]['ref_id']];
@@ -308,7 +308,7 @@ class FootnotesFilter extends FilterBase {
     $chars = "abcdefghijklmnopqrstuwxyz1234567890";
     $str = "";
 
-    // Seeding with srand() not neccessary in modern PHP versions.
+    // Seeding with srand() not necessary in modern PHP versions.
     for ($i = 0; $i < 7; $i++) {
       $n = rand(0, strlen($chars) - 1);
       $str .= substr($chars, $n, 1);

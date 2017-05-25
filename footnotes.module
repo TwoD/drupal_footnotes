@@ -2,7 +2,7 @@
 
 /**
  * @file
- * This file contains the hooks for Footmotes module.
+ * This file contains the hooks for Footnotes module.
  *
  * The Footnotes module is a filter that can be used to insert
  * automatically numbered footnotes into Drupal texts.
