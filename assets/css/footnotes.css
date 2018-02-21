@@ -10,14 +10,12 @@
   clear: both;
   margin-top: 4em;
   margin-bottom: 2em;
-  border-top: 1px solid #000000;
+  border-top: 1px solid #000;
 }
-
 /* Make footnotes appear in a smaller font */
 .footnotes {
   font-size: 0.9em;
 }
-
 /*
   Make the footnote a supertext^1
 */
@@ -27,7 +25,6 @@
   top: -0.25em;
   font-size: 0.9em;
 }
-
 /* Hide the bullet of the UL list of footnotes*/
 
 ul.footnotes {
@@ -40,8 +37,6 @@ ul.footnotes li {
   list-style-type: none;
   background: none; /* Garland theme sets a bullet via background image, this must be unset! See bug 861634 */
 }
-
-
 /* Move the footnote number outside of the margin for footnote text (hanging indent) */
 ul.footnotes {
   /* This is apparently very needed for the "position: absolute;" below to work correctly*/
@@ -52,17 +47,14 @@ ul.footnotes {
   left: 0px;
   z-index: 2;
 }
-
 /* Highlight the target footnote (or ref number, if a backlink was used) when user clicks a footnote. */
 .see-footnote:target,
 .footnotes .footnote:target {
-  background-color: #eeeeee;
+  background-color: #eee;
 }
 .see-footnote:target {
-  border: solid 1px #aaaaaa;
+  border: solid 1px #aaa;
 }
-
-
 /* Note: This CSS has a minor bug on all versions of IE in that the footnote numbers
 are aligned with the absolute bottom of their space, thus being a couple of pixels
 lower than their corresponding line of text. IE5.5 has a serious bug in that the numbers
@@ -77,14 +69,12 @@ are not shifted left at all, thus being garbled together with the start of their
   top: -0.25em;
   font-size: 0.75em;
 }
-
-
 /*
  * Textile Footnotes
  */
 /* First footnote */
 #fn1 {
-  border-top: 1px solid #000000;
+  border-top: 1px solid #000;
   margin-top: 3em;
 }
 .footnote {
