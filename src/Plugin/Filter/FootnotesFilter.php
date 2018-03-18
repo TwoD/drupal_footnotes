@@ -24,7 +24,8 @@ use Drupal\Component\Utility\Xss;
  *   type = \Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_IRREVERSIBLE,
  *   cache = FALSE,
  *   settings = {
- *     "footnotes_collapse" = FALSE
+ *     "footnotes_collapse" = FALSE,
+ *     "footnotes_html" = FALSE
  *   },
  *   weight = 0
  * )
@@ -108,7 +109,7 @@ class FootnotesFilter extends FilterBase {
 
     // Before doing the replacement, the callback function needs to know which
     // options to use.
-    $this->replaceCallback($this->settings['footnotes_collapse'], 'prepare');
+    $this->replaceCallback($this->settings, 'prepare');
 
     $pattern = '|<fn([^>]*)>(.*?)</fn>|s';
     $text = preg_replace_callback($pattern, [
@@ -157,6 +158,7 @@ class FootnotesFilter extends FilterBase {
    */
   protected function replaceCallback($matches, $op = '') {
     static $opt_collapse = 0;
+    static $opt_html = 0;
     static $n = 0;
     static $store_matches = [];
     static $used_values = [];
@@ -165,7 +167,8 @@ class FootnotesFilter extends FilterBase {
     if ($op == 'prepare') {
       // In the 'prepare' case, the first argument contains the options to use.
       // The name 'matches' is incorrect, we just use the variable anyway.
-      $opt_collapse = $matches;
+      $opt_collapse = $matches['footnotes_collapse'];
+      $opt_html = $matches['footnotes_html'];
       return 0;
     }
 
@@ -255,7 +258,7 @@ class FootnotesFilter extends FilterBase {
     // Create a footnote item as an array.
     $fn = [
       'value' => $value,
-      'text' => $matches[2],
+      'text' => $opt_html ? html_entity_decode($matches[2]) : $matches[2],
       'text_clean' => $text_clean,
       'fn_id' => 'footnote' . $value_id . '_' . $randstr,
       'ref_id' => 'footnoteref' . $value_id . '_' . $randstr,
@@ -337,6 +340,12 @@ class FootnotesFilter extends FilterBase {
       '#title' => t('Collapse footnotes with identical content'),
       '#default_value' => $this->settings['footnotes_collapse'],
       '#description' => t('If two footnotes have the exact same content, they will be collapsed into one as if using the same value="" attribute.'),
+    ];
+    $settings['footnotes_html'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Handle footnote text as HTML'),
+      '#default_value' => $this->settings['footnotes_html'],
+      '#description' => t('If not checked, a HTML tag in the footnote text will be shown as-is to the user.'),
     ];
     return $settings;
   }
