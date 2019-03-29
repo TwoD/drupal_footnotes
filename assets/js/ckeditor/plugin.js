@@ -109,7 +109,7 @@ CKEDITOR.plugins.footnotes = {
     }
 
     if (text && text.length > 0 )
-      realElement.setText(text);
+      realElement.setHtml(text);
     if (value && value.length > 0 )
       realElement.setAttribute('value',value);
 

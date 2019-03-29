@@ -17,7 +17,7 @@
                                 label: Drupal.t('Footnote text :'),
                                 setup: function (element) {
                                     if (isEdit)
-                                        this.setValue(element.getText());
+                                        this.setValue(element.getHtml());
                                 }
                             },
                             {
