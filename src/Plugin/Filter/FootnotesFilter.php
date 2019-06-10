@@ -85,6 +85,9 @@ class FootnotesFilter extends FilterBase {
     // just manipulates angle brackets. (Angle brackets are preferred here for
     // the simple reason that square brackets are more tedious to use in
     // regexps).
+    if (is_array($text)) {
+      implode($text);
+    }
     $text = preg_replace('|\[fn([^\]]*)\]|', '<fn$1>', $text);
     $text = preg_replace('|\[/fn\]|', '</fn>', $text);
     $text = preg_replace('|\[footnotes([^\]]*)\]|', '<footnotes$1>', $text);
