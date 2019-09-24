@@ -24,8 +24,6 @@
                                 id: 'value',
                                 type: 'text',
                                 label: Drupal.t('Value :'),
-                                labelLayout: 'horizontal',
-                                style: 'float:left;width:100px;',
                                 setup: function (element) {
                                     if (isEdit)
                                         this.setValue(element.getAttribute('value'));
