@@ -10,6 +10,7 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
+use Drupal\Core\Link;
 
 /**
  * Implements hook_help().
@@ -19,7 +20,7 @@ function footnotes_help($route_name, RouteMatchInterface $route_match) {
     case 'help.page.footnotes':
       return
         t('Insert automatically numbered footnotes using &lt;fn&gt; or [fn] tags. Enable the footnotes text filter @here',
-          ['@here' => Drupal::l(t('here'), Url::fromRoute('filter.admin_overview'))]
+          ['@here' => Link::fromTextAndUrl(t('here'), Url::fromRoute('filter.admin_overview'))]
         );
   }
 }
