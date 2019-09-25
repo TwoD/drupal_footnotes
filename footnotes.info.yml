@@ -1,5 +1,5 @@
 name: Footnotes
 description: 'Add automatically numbered footnotes to your posts.'
-core: 8.x
-project: footnotes
+
 type: module
+core: 8.x
