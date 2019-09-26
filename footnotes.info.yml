@@ -3,3 +3,6 @@ description: 'Add automatically numbered footnotes to your posts.'
 
 type: module
 core: 8.x
+
+dependencies:
+  - drupal:filter
