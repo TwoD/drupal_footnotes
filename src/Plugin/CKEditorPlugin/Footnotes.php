@@ -3,39 +3,23 @@
 namespace Drupal\footnotes\Plugin\CKEditorPlugin;
 
 use Drupal\ckeditor\CKEditorPluginBase;
-use Drupal\ckeditor\CKEditorPluginInterface;
-use Drupal\ckeditor\CKEditorPluginButtonsInterface;
 use Drupal\editor\Entity\Editor;
 
 /**
- * Defines the "CodeButton" plugin.
+ * Defines the "Footnotes" plugin.
  *
  * @CKEditorPlugin(
  *   id = "footnotes",
  *   label = @Translation("FootnotesButton")
  * )
  */
-class Footnotes extends CKEditorPluginBase implements CKEditorPluginInterface, CKEditorPluginButtonsInterface {
+class Footnotes extends CKEditorPluginBase {
 
   /**
    * Implements CKEditorPluginInterface::getDependencies().
    */
   public function getDependencies(Editor $editor) {
     return ['fakeobjects'];
-  }
-
-  /**
-   * Implements CKEditorPluginInterface::getLibraries().
-   */
-  public function getLibraries(Editor $editor) {
-    return [];
-  }
-
-  /**
-   * Implements CKEditorPluginInterface::isInternal().
-   */
-  public function isInternal() {
-    return FALSE;
   }
 
   /**
