@@ -2,9 +2,9 @@
 
 namespace Drupal\footnotes\Plugin\CKEditorPlugin;
 
+use Drupal\ckeditor\CKEditorPluginBase;
 use Drupal\ckeditor\CKEditorPluginInterface;
 use Drupal\ckeditor\CKEditorPluginButtonsInterface;
-use Drupal\Component\Plugin\PluginBase;
 use Drupal\editor\Entity\Editor;
 
 /**
@@ -15,7 +15,7 @@ use Drupal\editor\Entity\Editor;
  *   label = @Translation("FootnotesButton")
  * )
  */
-class Footnotes extends PluginBase implements CKEditorPluginInterface, CKEditorPluginButtonsInterface {
+class Footnotes extends CKEditorPluginBase implements CKEditorPluginInterface, CKEditorPluginButtonsInterface {
 
   /**
    * Implements CKEditorPluginInterface::getDependencies().
