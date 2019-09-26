@@ -24,7 +24,7 @@
       requires : [ 'fakeobjects','dialog' ],
       icons: 'footnotes',
       onLoad: function() {
-        var icon_path = window.location.origin + this.path + 'images/fn_icon2.png';
+        var icon_path = window.location.origin + this.path + 'icons/fn_icon2.png';
         CKEDITOR.addCss(
           '.cke_footnote' +
           '{' +
