@@ -4,6 +4,7 @@ namespace Drupal\footnotes\Plugin\CKEditorPlugin;
 
 use Drupal\ckeditor\CKEditorPluginBase;
 use Drupal\editor\Entity\Editor;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Defines the "Footnotes" plugin.
@@ -15,34 +16,36 @@ use Drupal\editor\Entity\Editor;
  */
 class Footnotes extends CKEditorPluginBase {
 
+  use StringTranslationTrait;
+
   /**
-   * Implements CKEditorPluginInterface::getDependencies().
+   * {@inheritdoc}
    */
   public function getDependencies(Editor $editor) {
     return ['fakeobjects'];
   }
 
   /**
-   * Implements CKEditorPluginInterface::getFile().
+   * {@inheritdoc}
    */
   public function getFile() {
     return drupal_get_path('module', 'footnotes') . '/assets/js/ckeditor/plugin.js';
   }
 
   /**
-   * Implements CKEditorPluginButtonsInterface::getButtons().
+   * {@inheritdoc}
    */
   public function getButtons() {
     return [
       'footnotes' => [
-        'label' => t('Footnotes'),
+        'label' => $this->t('Footnotes'),
         'image' => drupal_get_path('module', 'footnotes') . '/assets/js/ckeditor/icons/footnotes.png',
       ],
     ];
   }
 
   /**
-   * Implements CKEditorPluginInterface::getConfig().
+   * {@inheritdoc}
    */
   public function getConfig(Editor $editor) {
     return [];

@@ -2,16 +2,11 @@
 
 namespace Drupal\footnotes\Plugin\Filter;
 
-// Base class for the filter.
-use Drupal\filter\Plugin\FilterBase;
-
-// Necessary for settings forms.
-use Drupal\Core\Form\FormStateInterface;
-
-// Necessary for result of process().
-use Drupal\filter\FilterProcessResult;
-
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\filter\FilterProcessResult;
+use Drupal\filter\Plugin\FilterBase;
 
 /**
  * Provides a base filter for Footnotes filter.
@@ -32,29 +27,28 @@ use Drupal\Component\Utility\Xss;
  */
 class FootnotesFilter extends FilterBase {
 
-  /**
-   * Object with configuration for footnotes.
-   *
-   * @var object
-   */
-  protected $config;
+  use StringTranslationTrait;
 
   /**
-   * Object with configuration for footnotes, where we need editable..
+   * The renderer.
    *
-   * @var object
+   * @var \Drupal\Core\Render\RendererInterface
    */
-  protected $configEditable;
+  protected $renderer;
 
   /**
-   * {@inheritdoc}
+   * Constructs a FootnotesFilter object.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param array $plugin_definition
+   *   The plugin implementation definition.
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-
-    $this->config = \Drupal::config('footnotes.settings');
-    $this->configEditable = \Drupal::configFactory()
-      ->getEditable('footnotes.settings');
+    $this->renderer = \Drupal::service('renderer');
   }
 
   /**
@@ -68,10 +62,10 @@ class FootnotesFilter extends FilterBase {
    */
   public function tips($long = FALSE) {
     if ($long) {
-      return t('You can insert footnotes directly into texts with <code>[fn]This text becomes a footnote.[/fn]</code>. This will be replaced with a running number (the footnote reference) and the text within the [fn] tags will be moved to the bottom of the page (the footnote). See %link for additional usage options.', ['%link' => '<a href="http://drupal.org/project/footnotes">' . t('Footnotes Readme page') . '</a>']);
+      return $this->t('You can insert footnotes directly into texts with <code>[fn]This text becomes a footnote.[/fn]</code>. This will be replaced with a running number (the footnote reference) and the text within the [fn] tags will be moved to the bottom of the page (the footnote). See <a href=":link">Footnotes Readme page</a> for additional usage options.', [':link' => 'http://drupal.org/project/footnotes">']);
     }
     else {
-      return t('Use [fn]...[/fn] (or &lt;fn&gt;...&lt;/fn&gt;) to insert automatically numbered footnotes.');
+      return $this->t('Use [fn]...[/fn] (or &lt;fn&gt;...&lt;/fn&gt;) to insert automatically numbered footnotes.');
     }
   }
 
@@ -106,7 +100,7 @@ class FootnotesFilter extends FilterBase {
       $text = $text . '</fn>';
     }
     elseif ($open_tags > $close_tags + 1) {
-      trigger_error(t("You have unclosed fn tags. This is invalid and will
+      trigger_error($this->t("You have unclosed fn tags. This is invalid and will
         produce unpredictable results."));
     }
 
@@ -147,7 +141,7 @@ class FootnotesFilter extends FilterBase {
    * Uses static vars to temporarily store footnotes found.
    * This is not threadsafe, but PHP isn't.
    *
-   * @param array $matches
+   * @param mixed $matches
    *   Elements from array:
    *   - 0: complete matched string.
    *   - 1: tag name.
@@ -190,7 +184,7 @@ class FootnotesFilter extends FilterBase {
           '#theme' => 'footnote_list',
           '#footnotes' => $store_matches,
         ];
-        $str = \Drupal::service('renderer')->render($markup, FALSE);
+        $str = $this->renderer->render($markup);
       }
       // Reset the static variables so they can be used again next time.
       $n = 0;
@@ -299,7 +293,7 @@ class FootnotesFilter extends FilterBase {
       '#theme' => 'footnote_link',
       'fn' => $fn,
     ];
-    $result = \Drupal::service('renderer')->render($fn, FALSE);
+    $result = $this->renderer->render($fn);
 
     return $result;
   }
@@ -327,7 +321,7 @@ class FootnotesFilter extends FilterBase {
    *
    * @param array $form
    *   A minimally prepopulated form array.
-   * @param FormStateInterface $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The state of the (entire) configuration form.
    *
    * @return array
@@ -340,15 +334,15 @@ class FootnotesFilter extends FilterBase {
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $settings['footnotes_collapse'] = [
       '#type' => 'checkbox',
-      '#title' => t('Collapse footnotes with identical content'),
+      '#title' => $this->t('Collapse footnotes with identical content'),
       '#default_value' => $this->settings['footnotes_collapse'],
-      '#description' => t('If two footnotes have the exact same content, they will be collapsed into one as if using the same value="" attribute.'),
+      '#description' => $this->t('If two footnotes have the exact same content, they will be collapsed into one as if using the same value="" attribute.'),
     ];
     $settings['footnotes_html'] = [
       '#type' => 'checkbox',
-      '#title' => t('Handle footnote text as HTML'),
+      '#title' => $this->t('Handle footnote text as HTML'),
       '#default_value' => $this->settings['footnotes_html'],
-      '#description' => t('If not checked, a HTML tag in the footnote text will be shown as-is to the user.'),
+      '#description' => $this->t('If not checked, a HTML tag in the footnote text will be shown as-is to the user.'),
     ];
     return $settings;
   }
@@ -370,7 +364,7 @@ class FootnotesFilter extends FilterBase {
    * @return string|false
    *   The value of the existing footnote, FALSE otherwise.
    */
-  private function findFootnote($text, &$store_matches) {
+  private function findFootnote($text, array &$store_matches) {
     if (!empty($store_matches)) {
       foreach ($store_matches as &$fn) {
         if ($fn['text'] == $text) {

@@ -2,10 +2,8 @@
 
 namespace Drupal\footnotes\Tests;
 
-// Use of base class for the tests.
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\simpletest\WebTestBase;
-
-// Necessary for constants.
 use Drupal\Core\Session\AccountInterface;
 
 /**
@@ -17,6 +15,8 @@ use Drupal\Core\Session\AccountInterface;
  * @group footnotes
  */
 class FootnoteTest extends WebTestBase {
+
+  use StringTranslationTrait;
 
   /**
    * A global filter administrator.
@@ -90,8 +90,8 @@ class FootnoteTest extends WebTestBase {
     foreach ($filters as $filter) {
       $edit['filters[' . $filter . '][status]'] = TRUE;
     }
-    $this->drupalPostForm('admin/config/content/formats/add', $edit, t('Save configuration'));
-    $this->assertRaw(t('Added text format %format.', ['%format' => $edit['name']]), 'New filter created.');
+    $this->drupalPostForm('admin/config/content/formats/add', $edit, $this->t('Save configuration'));
+    $this->assertRaw($this->t('Added text format %format.', ['%format' => $edit['name']]), 'New filter created.');
     $this->drupalGet('admin/config/content/formats');
   }
 

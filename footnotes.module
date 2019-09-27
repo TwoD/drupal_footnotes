@@ -10,7 +10,6 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
-use Drupal\Core\Link;
 
 /**
  * Implements hook_help().
@@ -18,10 +17,9 @@ use Drupal\Core\Link;
 function footnotes_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.footnotes':
-      return
-        t('Insert automatically numbered footnotes using &lt;fn&gt; or [fn] tags. Enable the footnotes text filter @here',
-          ['@here' => Link::fromTextAndUrl(t('here'), Url::fromRoute('filter.admin_overview'))]
-        );
+      return t("Insert automatically numbered footnotes using &lt;fn&gt; or [fn] tags. Enable the footnotes text filter <a href=':href'>here</a>", [
+        ':href' => Url::fromRoute('filter.admin_overview')->toString(),
+      ]);
   }
 }
 
@@ -147,12 +145,12 @@ function theme_footnote_list($footnotes) {
  * </code>
  *
  * @param object $format
- *    The text format object caller is part of.
+ *   The text format object caller is part of.
  * @param object $caller_filter
- *    The filter object representing the caller (in this text format).
+ *   The filter object representing the caller (in this text format).
  *
  * @return True
- *    If Footnotes is present after $caller in $format.
+ *   If Footnotes is present after $caller in $format.
  */
 function footnotes_is_footnotes_later($format, $caller_filter) {
   return $format['filter_footnotes']['weight'] > $caller_filter['weight'];

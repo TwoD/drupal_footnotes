@@ -25,7 +25,7 @@
   top: -0.25em;
   font-size: 0.9em;
 }
-/* Hide the bullet of the UL list of footnotes*/
+/* Hide the bullet of the UL list of footnotes */
 
 ul.footnotes {
   list-style-type: none;
@@ -39,12 +39,12 @@ ul.footnotes li {
 }
 /* Move the footnote number outside of the margin for footnote text (hanging indent) */
 ul.footnotes {
-  /* This is apparently very needed for the "position: absolute;" below to work correctly*/
+  /* This is apparently very needed for the "position: absolute;" below to work correctly */
   position: relative;
 }
 .footnotes .footnote-label {
   position: absolute;
-  left: 0px;
+  left: 0;
   z-index: 2;
 }
 /* Highlight the target footnote (or ref number, if a backlink was used) when user clicks a footnote. */
