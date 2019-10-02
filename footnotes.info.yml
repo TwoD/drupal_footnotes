@@ -5,7 +5,7 @@ type: module
 core: 8.x
 
 dependencies:
-  - 'drupal:filter'
+  - 'drupal:system (>= 8.6)'
   - 'fakeobjects:fakeobjects'
 test_dependencies:
   - 'fakeobjects:fakeobjects'
