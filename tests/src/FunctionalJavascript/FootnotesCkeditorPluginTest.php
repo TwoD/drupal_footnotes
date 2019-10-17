@@ -5,6 +5,7 @@ namespace Drupal\Tests\footnotes\FunctionalJavascript;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
+use Drupal\Tests\ckeditor\Traits\CKEditorTestTrait;
 
 /**
  * Contains Footnotes CKEditor plugin functionality tests.
@@ -14,13 +15,16 @@ use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 class FootnotesCkeditorPluginTest extends WebDriverTestBase {
 
   use StringTranslationTrait;
+  use CKEditorTestTrait;
 
   /**
    * {@inheritdoc}
    */
   protected static $modules = [
+    'ckeditor',
     'fakeobjects',
     'footnotes',
+    'filter',
     'node',
   ];
 
@@ -128,10 +132,8 @@ class FootnotesCkeditorPluginTest extends WebDriverTestBase {
     $assert_session = $this->assertSession();
 
     $this->drupalGet("node/add/page");
-    $this->assertNotEmpty(
-      $assert_session->waitForElementVisible('css', '.cke_1.cke')
-    );
-    $assert_session->elementExists('css', '.cke .cke_button__footnotes')->click();
+    $this->waitForEditor();
+    $this->pressEditorButton('footnotes');
     $this->assertNotEmpty(
       $assert_session->waitForElementVisible('css', '.cke_1.cke_editor_edit-body-0-value_dialog')
     );
@@ -144,7 +146,7 @@ class FootnotesCkeditorPluginTest extends WebDriverTestBase {
 
     $texts = ['Text one.', 'Text two.', 'Text tree', 'Text four', 'Text five'];
     foreach ($texts as $key => $value) {
-      $assert_session->elementExists('css', '.cke .cke_button__footnotes')->click();
+      $this->pressEditorButton('footnotes');
       $this->assertNotEmpty(
         $assert_session->waitForElementVisible('css', '.cke_1.cke_editor_edit-body-0-value_dialog')
       );
@@ -154,7 +156,7 @@ class FootnotesCkeditorPluginTest extends WebDriverTestBase {
 
       $this->assertEmpty($assert_session->elementExists('css', '.cke_1.cke_editor_edit-body-0-value_dialog')->isVisible());
     }
-    $assert_session->elementExists('css', '.cke .cke_button__source')->click();
+    $this->pressEditorButton('source');
     $body_value = $assert_session->elementExists('css', '.cke .cke_contents .cke_source')->getValue();
 
     $body_value = str_replace(["\r\n", "\r", "\n"], "", $body_value);
