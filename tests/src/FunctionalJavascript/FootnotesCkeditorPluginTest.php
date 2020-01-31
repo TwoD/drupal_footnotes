@@ -2,9 +2,14 @@
 
 namespace Drupal\Tests\footnotes\FunctionalJavascript;
 
-use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\editor\Entity\Editor;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\filter\Entity\FilterFormat;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
+use Drupal\node\Entity\NodeType;
 use Drupal\Tests\ckeditor\Traits\CKEditorTestTrait;
 
 /**
@@ -12,7 +17,8 @@ use Drupal\Tests\ckeditor\Traits\CKEditorTestTrait;
  *
  * @group footnotes
  */
-class FootnotesCkeditorPluginTest extends WebDriverTestBase {
+class FootnotesCkeditorPluginTest extends WebDriverTestBase
+{
 
   use StringTranslationTrait;
   use CKEditorTestTrait;
@@ -20,118 +26,114 @@ class FootnotesCkeditorPluginTest extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = [
-    'ckeditor',
-    'fakeobjects',
-    'footnotes',
-    'filter',
-    'node',
-  ];
+  protected $defaultTheme = 'stark';
 
   /**
-   * An user with permissions to proper permissions.
+   * The account.
    *
    * @var \Drupal\user\UserInterface
    */
-  protected $adminUser;
+  protected $account;
 
   /**
-   * Text format name.
+   * The FilterFormat config entity used for testing.
    *
-   * @var string
+   * @var \Drupal\filter\FilterFormatInterface
    */
-  protected $formatName;
+  protected $filterFormat;
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  public static $modules = ['node', 'ckeditor', 'filter', 'ckeditor_test', 'fakeobjects', 'footnotes'];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp()
+  {
     parent::setUp();
 
-    $this->drupalCreateContentType(['type' => 'page']);
-
-    // Create a filter admin user.
-    $permissions = [
-      'administer filters',
-      'administer nodes',
-      'edit own page content',
-      'create page content',
-      'access administration pages',
-      'administer site configuration',
-    ];
-    $this->adminUser = $this->drupalCreateUser($permissions);
-    $this->formatName = strtolower($this->randomMachineName());
-
-    $this->drupalLogin($this->adminUser);
-    $this->createTextFormat();
-  }
-
-  /**
-   * Tests CKEditor plugin functionality.
-   *
-   * @todo add tests for CKEditor filter settings.
-   */
-  public function testFootnotesCkeditorPlugin() {
-    $this->checkCkeditor();
-  }
-
-  /**
-   * Create a new text format.
-   *
-   * @param bool $additional_settings
-   *   Indicates if filter settings should be enabled.
-   *
-   * @throws \Behat\Mink\Exception\ElementNotFoundException
-   * @throws \Behat\Mink\Exception\ResponseTextException
-   */
-  protected function createTextFormat($additional_settings = FALSE) {
-    $session = $this->getSession();
-    $page = $session->getPage();
-    $assert_session = $this->assertSession();
-
-    $button_groups = json_encode([
-      [
-        [
-          'name' => 'Tools',
-          'items' => ['Source', 'footnotes'],
+    // Create a text format and associate CKEditor.
+    $this->filterFormat = FilterFormat::create([
+      'format' => 'filtered_html',
+      'name' => 'Filtered HTML',
+      'filters' => [
+        'filter_footnotes' => [
+          'status' => TRUE,
+          'settings' => [
+            'footnotes_collapse' => 0,
+            'footnotes_html' => 0
+          ],
         ],
       ],
     ]);
+    $this->filterFormat->save();
 
-    $this->drupalGet("admin/config/content/formats/add");
-    // Fill in a label to the media type.
-    $page->fillField('name', $this->formatName);
-    $this->assertNotEmpty(
-      $assert_session->waitForElementVisible('css', '.machine-name-value')
-    );
-    $page->checkField('roles[' . AccountInterface::AUTHENTICATED_ROLE . ']');
-    $page->selectFieldOption('editor[editor]', 'ckeditor');
-    $this->assertNotEmpty(
-      $assert_session->waitForElementVisible('css', '.ckeditor-toolbar-configuration')
-    );
-    $session->executeScript("jQuery('.form-item-editor-settings-toolbar-button-groups').css('display', 'block');");
-    $page->fillField('editor[settings][toolbar][button_groups]', $button_groups);
-    $page->checkField('filters[filter_footnotes][status]');
-    $this->assertNotEmpty(
-      $assert_session->waitForElementVisible('css', '[data-drupal-selector="edit-filters-filter-footnotes-settings"]')
-    );
-    if ($additional_settings) {
-      $page->checkField('filters[filter_footnotes][settings][footnotes_collapse]');
-      $page->checkField('filters[filter_footnotes][settings][footnotes_html]');
-    }
-    $page->pressButton('Save configuration');
-    $assert_session->pageTextContains($this->t('Added text format @format.', ['@format' => $this->formatName]));
+    Editor::create([
+      'format' => 'filtered_html',
+      'editor' => 'ckeditor',
+      'settings' => [
+        'toolbar' => [
+          'rows' => [
+            [
+              [
+                'name' => 'All the things',
+                'items' => [
+                  'Source',
+                  'Bold',
+                  'Italic',
+                  'footnotes',
+                ],
+              ],
+            ],
+          ],
+        ],
+      ],
+    ])->save();
+
+    // Create a node type for testing.
+    NodeType::create(['type' => 'page', 'name' => 'page'])->save();
+
+    $field_storage = FieldStorageConfig::loadByName('node', 'body');
+
+    // Create a body field instance for the 'page' node type.
+    FieldConfig::create([
+      'field_storage' => $field_storage,
+      'bundle' => 'page',
+      'label' => 'Body',
+      'settings' => ['display_summary' => TRUE],
+      'required' => TRUE,
+    ])->save();
+
+    // Assign widget settings for the 'default' form mode.
+    EntityFormDisplay::create([
+      'targetEntityType' => 'node',
+      'bundle' => 'page',
+      'mode' => 'default',
+      'status' => TRUE,
+    ])->setComponent('body', ['type' => 'text_textarea_with_summary'])
+      ->save();
+
+    $this->account = $this->drupalCreateUser([
+      'administer nodes',
+      'create page content',
+      'use text format filtered_html',
+    ]);
+    $this->drupalLogin($this->account);
   }
 
   /**
    * Tests CKEditor plugin functionality for body field.
    */
-  protected function checkCkeditor() {
+  public function testUi()
+  {
     $session = $this->getSession();
-    $page = $session->getPage();
     $assert_session = $this->assertSession();
 
     $this->drupalGet("node/add/page");
+    $page = $session->getPage();
+
     $this->waitForEditor();
     $this->pressEditorButton('footnotes');
     $this->assertNotEmpty(
