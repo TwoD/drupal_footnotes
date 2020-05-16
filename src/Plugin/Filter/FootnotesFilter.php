@@ -123,7 +123,7 @@ class FootnotesFilter extends FilterBase {
     if (preg_match($pattern, $text) > 0) {
       $text = preg_replace($pattern, $footer, $text, 1);
     }
-    else {
+    elseif (!empty($footer)) {
       $text .= "\n\n" . $footer;
     }
     $result = new FilterProcessResult($text);
