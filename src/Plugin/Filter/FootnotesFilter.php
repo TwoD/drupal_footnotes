@@ -119,7 +119,7 @@ class FootnotesFilter extends FilterBase {
     // Thanks to acp on drupal.org for this idea. see
     // http://drupal.org/node/87226.
     $footer = $this->replaceCallback(NULL, 'output footer');
-    $pattern = '|(<footnotes([^\]]*)>)|';
+    $pattern = '|(<footnotes([\ \/]*)>)|';
     if (preg_match($pattern, $text) > 0) {
       $text = preg_replace($pattern, $footer, $text, 1);
     }
@@ -291,7 +291,7 @@ class FootnotesFilter extends FilterBase {
     // around the old array.
     $fn = [
       '#theme' => 'footnote_link',
-      'fn' => $fn,
+      '#fn' => $fn,
     ];
     $result = $this->renderer->render($fn);
 
