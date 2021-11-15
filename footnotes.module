@@ -37,12 +37,11 @@ function footnotes_theme() {
     ],
     'footnote_list' => [
       'variables' => [
-        'footnotes'=> NULL,
+        'footnotes' => NULL,
       ],
     ],
   ];
 }
-
 
 /**
  * Helper for other filters, check if Footnotes is present in your filter chain.

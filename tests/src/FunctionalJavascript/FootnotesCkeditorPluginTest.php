@@ -17,8 +17,7 @@ use Drupal\Tests\ckeditor\Traits\CKEditorTestTrait;
  *
  * @group footnotes
  */
-class FootnotesCkeditorPluginTest extends WebDriverTestBase
-{
+class FootnotesCkeditorPluginTest extends WebDriverTestBase {
 
   use StringTranslationTrait;
   use CKEditorTestTrait;
@@ -45,13 +44,19 @@ class FootnotesCkeditorPluginTest extends WebDriverTestBase
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['node', 'ckeditor', 'filter', 'ckeditor_test', 'fakeobjects', 'footnotes'];
+  public static $modules = [
+    'node',
+    'ckeditor',
+    'filter',
+    'ckeditor_test',
+    'fakeobjects',
+    'footnotes',
+  ];
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp()
-  {
+  protected function setUp() {
     parent::setUp();
 
     // Create a text format and associate CKEditor.
@@ -63,7 +68,7 @@ class FootnotesCkeditorPluginTest extends WebDriverTestBase
           'status' => TRUE,
           'settings' => [
             'footnotes_collapse' => 0,
-            'footnotes_html' => 0
+            'footnotes_html' => 0,
           ],
         ],
       ],
@@ -126,8 +131,7 @@ class FootnotesCkeditorPluginTest extends WebDriverTestBase
   /**
    * Tests CKEditor plugin functionality for body field.
    */
-  public function testUi()
-  {
+  public function testUi() {
     $session = $this->getSession();
     $assert_session = $this->assertSession();
 
