@@ -15,7 +15,7 @@ function footnotesDialog(editor, isEdit) {
         elements: [
           {
             id: "footnote",
-            type: "text",
+            type: "textarea",
             label: Drupal.t("Footnote text :"),
             setup(element) {
               if (isEdit) {
