@@ -24,15 +24,11 @@ CKEDITOR.plugins.add("footnotes", {
   requires: ["fakeobjects", "dialog"],
   icons: "footnotes",
   onLoad() {
-    const iconPath = `${window.location.origin + this.path}icons/fn_icon2.png`;
     CKEDITOR.addCss(
-      `${".cke_footnote{background-image: url("}${CKEDITOR.getUrl(
-        iconPath
-      )});` +
-        `background - position: center center;` +
-        `background - repeat: no - repeat;` +
-        `width: 16px;` +
-        `height: 16px;` +
+      `.cke_footnote{` +
+        `height: 14px;` +
+        `display: inline-block;` +
+        `vertical-align: super;` +
         `}`
     );
   },
@@ -93,17 +89,22 @@ CKEDITOR.plugins.add("footnotes", {
   afterInit(editor) {
     const { dataProcessor } = editor;
     const { dataFilter } = dataProcessor;
-
     if (dataFilter) {
       dataFilter.addRules({
         elements: {
           fn(element) {
-            return editor.createFakeParserElement(
+            const fakeElement = editor.createFakeParserElement(
               element,
               "cke_footnote",
               "hiddenfield",
               false
             );
+            const value = element['attributes']['value'] ? element['attributes']['value'] : 0;
+            const svgWidth = 10 + value.length * 6;
+            const icon = "data:image/svg+xml;utf8,<svg width='" + svgWidth + "' height='14' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'><text fill='blue' style='font-size:0.7em;font-weight:500;font-family: sans-serif;' x='0' y='9'>[" + value + "]</text></svg>";
+            fakeElement.attributes['title'] = Drupal.t('Footnote') + ' ' + value;
+            fakeElement.attributes['src'] = icon;
+            return fakeElement;
           }
         }
       });
@@ -133,6 +134,12 @@ CKEDITOR.plugins.footnotes = {
       "hiddenfield",
       false
     );
+
+    const svgWidth = 10 + value.length * 6;
+    const icon = "data:image/svg+xml;utf8,<svg width='" + svgWidth + "' height='14' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'><text fill='blue' style='font-size:0.7em;font-weight:500;font-family: sans-serif;' x='0' y='9'>[" + value + "]</text></svg>";
+    fakeElement.setAttribute('title', Drupal.t('Footnote') + ' ' + value);
+    fakeElement.setAttribute('src', icon);
+
     editor.insertElement(fakeElement);
   },
 
