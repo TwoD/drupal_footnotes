@@ -174,7 +174,7 @@ class FootnotesCkeditorPluginTest extends WebDriverTestBase {
     }
     $expected_value .= '</p>';
 
-    $this->assertEqual($body_value, $expected_value, $this->t('String, formed by CKEditor, is correct.'));
+    $this->assertEquals($body_value, $expected_value, $this->t('String, formed by CKEditor, is correct.'));
   }
 
 }

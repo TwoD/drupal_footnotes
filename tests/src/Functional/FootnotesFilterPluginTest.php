@@ -13,6 +13,8 @@ use Drupal\Tests\BrowserTestBase;
  */
 class FootnotesFilterPluginTest extends BrowserTestBase {
 
+  protected $defaultTheme = 'stark';
+
   use StringTranslationTrait;
 
   /**
@@ -86,15 +88,15 @@ class FootnotesFilterPluginTest extends BrowserTestBase {
     $this->drupalGet('node/' . $node->id());
 
     // Footnote with [fn].
-    $this->assertNoRaw($note1);
-    $this->assertText($text1);
+    $this->assertSession()->responseNotContains($note1);
+    $this->assertSession()->pageTextContains($text1);
 
     // Footnote with <fn>.
-    $this->assertNoRaw($note2);
-    $this->assertText($text2);
+    $this->assertSession()->responseNotContains($note2);
+    $this->assertSession()->pageTextContains($text2);
 
     // Css file:
-    $this->assertRaw('/assets/css/footnotes.css');
+    $this->assertSession()->responseContains('/assets/css/footnotes.css');
     // @todo currently additional settings doesn't work as expected.
     // So we don't check additional settings for now.
     // $this->createTextFormat(TRUE);
@@ -120,13 +122,13 @@ class FootnotesFilterPluginTest extends BrowserTestBase {
     $this->drupalGet('node/' . $node->id());
 
     // Footnote with [fn].
-    $this->assertNoRaw($note1);
-    $this->assertText($text1);
+    $this->assertSession()->responseNotContains($note1);
+    $this->assertSession()->pageTextContains($text1);
 
     // Elements with the same value should be collapsed.
     // @todo This should work only if footnotes_collapse setting is enabled.
-    $this->assertNoRaw($note2);
-    $this->assertNoText($text2);
+    $this->assertSession()->responseNotContains($note2);
+    $this->assertSession()->pageTextNotContains($text2);
   }
 
   /**
@@ -154,15 +156,15 @@ class FootnotesFilterPluginTest extends BrowserTestBase {
     ];
     $this->drupalGet("admin/config/content/formats/add");
     // Keep the "CKEditor" editor selected and click the "Configure" button.
-    $this->drupalPostForm(NULL, $edit, 'editor_configure');
+    $this->submitForm($edit, 'editor_configure');
     $edit['editor[settings][toolbar][button_groups]'] = $button_groups;
     $edit['filters[filter_footnotes][settings][footnotes_collapse]'] = $button_groups;
     if ($additional_settings) {
       $edit['filters[filter_footnotes][settings][footnotes_collapse]'] = 1;
       $edit['filters[filter_footnotes][settings][footnotes_html]'] = 1;
     }
-    $this->drupalPostForm(NULL, $edit, $this->t('Save configuration'));
-    $this->assertText($this->t('Added text format @format.', ['@format' => $this->formatName]));
+    $this->submitForm($edit, $this->t('Save configuration'));
+    $this->assertSession()->pageTextContains($this->t('Added text format @format.', ['@format' => $this->formatName]));
   }
 
 }

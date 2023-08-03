@@ -2,6 +2,7 @@
 
 namespace Drupal\footnotes\Plugin\CKEditorPlugin;
 
+use Drupal;
 use Drupal\ckeditor\CKEditorPluginBase;
 use Drupal\editor\Entity\Editor;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -29,7 +30,7 @@ class Footnotes extends CKEditorPluginBase {
    * {@inheritdoc}
    */
   public function getFile() {
-    return drupal_get_path('module', 'footnotes') . '/assets/js/ckeditor/plugin.js';
+    return Drupal::service('extension.list.module')->getPath('footnotes') . '/assets/js/ckeditor/plugin.js';
   }
 
   /**
@@ -39,7 +40,7 @@ class Footnotes extends CKEditorPluginBase {
     return [
       'footnotes' => [
         'label' => $this->t('Footnotes'),
-        'image' => drupal_get_path('module', 'footnotes') . '/assets/js/ckeditor/icons/footnotes.png',
+        'image' => Drupal::service('extension.list.module')->getPath('footnotes') . '/assets/js/ckeditor/icons/footnotes.png',
       ],
     ];
   }
