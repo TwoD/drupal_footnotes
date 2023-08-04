@@ -383,7 +383,7 @@ class FootnotesFilter extends FilterBase {
     );
 
     foreach ($matches[1] as $value_string) {
-      preg_match('/\"\K[^()]*(?=\")/', $value_string, $value);
+      preg_match('/(?<=\")(.*?)(?=\")/', $value_string, $value);
 
       if (empty($instances[$value[0]])) {
         $instances[$value[0]] = 1;
