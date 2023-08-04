@@ -1,3 +1,15 @@
+2023-08-03 Footnotes 3.1.0
+
+This version introduces Drupal 10 compatibility, as well as support for both
+CKEditor4 and CKEditor5.
+
+ - Fn value in the backend: https://www.drupal.org/project/footnotes/issues/3119883
+ - Allow footnote reference links to be aware of other instances to the same footnote - https://www.drupal.org/project/footnotes/issues/3248765
+ - Set title attribute for fakeobjects - https://www.drupal.org/project/footnotes/issues/3249716
+ - Enable CKEditor basic styles for footnot text field - https://www.drupal.org/project/footnotes/issues/3204959
+ - Don't render empty footnotes - https://www.drupal.org/project/footnotes/issues/3323235
+ - Support for ckeditor 5 - https://www.drupal.org/project/footnotes/issues/3252524
+
 2010-03-xx Footnotes 7.x-2.5
 
  - First Drupal 7 release. No major feature changes over 6.x-2.5.
