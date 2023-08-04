@@ -216,6 +216,7 @@ class FootnotesFilter extends FilterBase {
     // (fixes http://drupal.org/node/194558).
     $randstr = $this->randstr();
 
+    $children_text = '';
     // Did the pattern match anything in the <fn> tag?
     if ($matches[1]) {
       // See if value attribute can parsed, either well-formed in quotes eg
@@ -226,6 +227,12 @@ class FootnotesFilter extends FilterBase {
       }
       elseif (preg_match('|value=(\S*)|', $matches[1], $value_match)) {
         $value = $value_match[1];
+      }
+
+      // Try to match the text attribute as well, in case children are stored
+      // in the attribute.
+      if (preg_match('|text=["\'](.*?)["\']|', $matches[1], $text_match)) {
+        $children_text = $text_match[1];
       }
     }
 
@@ -255,11 +262,14 @@ class FootnotesFilter extends FilterBase {
     // attribute.
     $value_id = preg_replace('|[^\w\-]|', '', $value);
 
+    // Decide whether to use the attribute or the child content for text.
+    $text = $children_text ? $children_text : $matches[2];
+
     // Create a sanitized version of $text that is suitable for using as HTML
     // attribute value. (In particular, as the title attribute to the footnote
     // link).
     $allowed_tags = [];
-    $text_clean = Xss::filter($matches['2'], $allowed_tags);
+    $text_clean = Xss::filter($text, $allowed_tags);
     // HTML attribute cannot contain quotes.
     $text_clean = str_replace('"', "&quot;", $text_clean);
     // Remove newlines. Browsers don't support them anyway and they'll confuse
@@ -289,7 +299,7 @@ class FootnotesFilter extends FilterBase {
     // Create a footnote item as an array.
     $fn = [
       'value' => $value,
-      'text' => $opt_html ? html_entity_decode($matches[2]) : $matches[2],
+      'text' => $opt_html ? html_entity_decode($text) : $text,
       'text_clean' => $text_clean,
       'fn_id' => 'footnote' . $value_id . '_' . $randstr,
       'ref_id' => 'footnoteref' . $value_id . '_' . $randstr,
