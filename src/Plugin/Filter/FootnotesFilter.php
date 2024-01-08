@@ -217,6 +217,7 @@ class FootnotesFilter extends FilterBase {
     $randstr = $this->randstr();
 
     $children_text = '';
+    $value = '';
     // Did the pattern match anything in the <fn> tag?
     if ($matches[1]) {
       // See if value attribute can parsed, either well-formed in quotes eg
@@ -236,7 +237,7 @@ class FootnotesFilter extends FilterBase {
       }
     }
 
-    if (isset($value)) {
+    if (!empty($value)) {
       // A value label was found. If it is numeric, record it in $n so further
       // notes can increment from there.
       // After adding support for multiple references to same footnote in the
@@ -278,9 +279,13 @@ class FootnotesFilter extends FilterBase {
     $text_clean = str_replace("\r", "", $text_clean);
 
     $instance = 1;
+    // If the value is empty it still gets incremented.
+    // But this is not done for the instances, so fallback on the empty
+    // value for the key.
+    $instances = $this->instanceArray[$value] ?? 0;
 
     // If a link has more then 1 instance.
-    if ($this->instanceArray[$value] > 1) {
+    if ($instances > 1) {
       // If we have stored matches, use these to calculate the current instance.
       foreach ($store_matches as $match) {
         if ($match['value'] == $value) {
@@ -303,7 +308,7 @@ class FootnotesFilter extends FilterBase {
       'text_clean' => $text_clean,
       'fn_id' => 'footnote' . $value_id . '_' . $randstr,
       'ref_id' => 'footnoteref' . $value_id . '_' . $randstr,
-      'instances' => $this->instanceArray[$value],
+      'instances' => $instances,
       'instance' => $instance,
     ];
 
@@ -384,12 +389,13 @@ class FootnotesFilter extends FilterBase {
 
     foreach ($matches[1] as $value_string) {
       preg_match('/(?<=\")(.*?)(?=\")/', $value_string, $value);
-
-      if (empty($instances[$value[0]])) {
-        $instances[$value[0]] = 1;
-      }
-      else {
-        $instances[$value[0]]++;
+      if (isset($value[0])) {
+        if (empty($instances[$value[0]])) {
+          $instances[$value[0]] = 1;
+        }
+        else {
+          $instances[$value[0]]++;
+        }
       }
     }
 
@@ -427,7 +433,7 @@ class FootnotesFilter extends FilterBase {
     $settings['footnotes_css'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Use footnotes CSS'),
-      '#default_value' => isset($this->settings['footnotes_css']) ? $this->settings['footnotes_css'] : TRUE,
+      '#default_value' => $this->settings['footnotes_css'] ?? TRUE,
       '#description' => $this->t('Uncheck this option to remove footnotes CSS.'),
     ];
     return $settings;
