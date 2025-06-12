@@ -9,19 +9,10 @@ The Footnotes module is used to easily create automatically numbered footnote re
  * To submit bug reports and feature suggestions, or track changes:
    https://www.drupal.org/project/issues/footnotes
 
-REQUIREMENTS
-------------------
-
-The Footnote module for Drupal 8 requires the following modules and plugins:
-
- * FakeObjects (https://www.drupal.org/project/fakeobjects)
- * CKEditor plugin (http://ckeditor.com/addon/fakeobjects)
-
 INSTALLATION
 ----------------
-* Before you can use the FakeObjects module, you need to download the plugin from http://ckeditor.com/addon/fakeobjects and place it in /libraries/fakeobjects.
 
-* In all other steps, install the module as you would normally install a contributed Drupal module. Visit
+* Install the module as you would normally install a contributed Drupal module. Visit
 https://www.drupal.org/docs/8/extending-drupal-8/installing-drupal-8-modules for further information.
 
 CONFIGURATION
@@ -43,15 +34,9 @@ Ex:
 
  [fn value="5"]This becomes footnote #5. Subsequent are #6, #7...[/fn]
  [fn value="*"]This footnote is assigned the label "*"[/fn]
- 
+
 Using value="" you can have multiple references to the same footnote in the text body.
 
  [fn value="5"]This becomes footnote #5.[/fn]
  [fn value="5"]This is a reference to the same footnote #5, this text itself is discarded.[/fn]
 
-TROUBLESHOOTING & FAQ
-------------------------------
-
-Q: When trying to install the Footnotes module, I get the message: Before you can use the FakeObjects module, you need to download the plugin from ckeditor.com and place it in /libraries/fakeobjects."
-
-A: To avoid this error message, please follow the guidelines in the Required modules and the Installation sections of this Readme file. Please mind that the Drupal 8.x-2.x branch of the Footnotes module only supports the CKEditor and does not support the TinyMCE.

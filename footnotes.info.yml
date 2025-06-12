@@ -2,7 +2,3 @@ name: Footnotes
 description: 'Add automatically numbered footnotes to your posts.'
 type: module
 core_version_requirement: ^8 || ^9 || ^10
-dependencies:
-  - 'fakeobjects:fakeobjects'
-test_dependencies:
-  - 'fakeobjects:fakeobjects'
