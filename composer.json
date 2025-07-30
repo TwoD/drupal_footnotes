@@ -30,8 +30,5 @@
     "source": "https://cgit.drupalcode.org/footnotes"
   },
   "license": "GPL-2.0+",
-  "minimum-stability": "dev",
-  "require": {
-    "drupal/core": ">=8.6"
-  }
+  "minimum-stability": "dev"
 }
