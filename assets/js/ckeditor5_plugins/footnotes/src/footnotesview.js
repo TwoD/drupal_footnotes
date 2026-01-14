@@ -5,7 +5,7 @@ import {
   ButtonView,
   submitHandler
 } from 'ckeditor5/src/ui';
-import { icons } from 'ckeditor5/src/core';
+import { IconCheck, IconCancel } from 'ckeditor5/src/icons';
 import { createLabeledFootnotesTextArea } from "./utils";
 
 export default class FormView extends View {
@@ -13,9 +13,9 @@ export default class FormView extends View {
     super(locale);
     this.footnotesText = this._createTextArea('Footnote text');
     this.footnotesValue = this._createInput('Value');
-    this.saveButtonView = this._createButton('Save', icons.check, 'ck-button-save');
+    this.saveButtonView = this._createButton('Save', IconCheck, 'ck-button-save');
     this.saveButtonView.type = 'submit';
-    this.cancelButtonView = this._createButton('Cancel', icons.cancel, 'ck-button-cancel');
+    this.cancelButtonView = this._createButton('Cancel', IconCancel, 'ck-button-cancel');
     this.cancelButtonView.delegate('execute').to(this, 'cancel');
     this.childViews = this.createCollection([
       this.footnotesText,
