@@ -31,7 +31,7 @@ export default class FootnotesUI extends Plugin {
     editor.listenTo( editor.editing.view.document, 'click', ( evt, data ) => {
       const modelElement = editor.editing.mapper.toModelElement( data.target);
 
-      if ( modelElement.name == 'Footnotes' ) {
+      if ( modelElemen && modelElement.name == 'Footnotes' ) {
         this.formView.footnotesText.fieldView.value = modelElement.getAttribute('text');
         this.formView.footnotesValue.fieldView.value = modelElement.getAttribute('value');
         this._showUI();
